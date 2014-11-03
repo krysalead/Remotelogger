@@ -15,8 +15,8 @@ var server = http.createServer(function(request, response) {
   if (query.log) {
     var sev = query.sev ? query.sev : 'log';
     var cl = query.classname ? query.classname : "General";
-    if (filter==undefined || (cl.indexOf(filter) > -1 || query.log.indexOf(filter) > -1 || sev.indexOf(filter) > -1)) {
-      var log = getMessage(cl, query.log, sev);
+    if (filter == undefined || (cl.indexOf(filter) > -1 || query.log.indexOf(filter) > -1 || sev.indexOf(filter) > -1)) {
+      var log = getMessage(cl, query.log, sev, query.logdate, query.senddate);
       if (logfile) {
         fs.appendFileSync(logfile, log + "\n");
       }
@@ -44,13 +44,26 @@ function getColor(sev) {
   return sevColor[sev] ? sevColor[sev] : 'blue';
 }
 
-function getMessage(classname, msg, sev) {
+function getMessage(classname, msg, sev, logtime, senttime) {
   var s = [];
-  s.push("[" + getFormatedDate(new Date()) + "]");
+  s.push("[" + getFormatedDate(new Date(new Number(logtime))) + "]");
+  s.push("[" + formatTime((new Date()).getTime() - senttime) + "]");
   s.push("[" + classname + "]");
   s.push("[" + sev.toUpperCase() + "]");
   s.push(msg);
   return (s.join(""))[getColor(sev)];
+}
+
+function formatTime(duration) {
+  var milliseconds = parseInt((duration % 1000) / 100),
+    seconds = parseInt((duration / 1000) % 60),
+    minutes = parseInt((duration / (1000 * 60)) % 60),
+
+    hours = (hours < 10) ? "0" + hours : hours;
+  minutes = (minutes < 10) ? "0" + minutes : minutes;
+  seconds = (seconds < 10) ? "0" + seconds : seconds;
+
+  return minutes + ":" + seconds + "." + milliseconds;
 }
 
 function getFormatedDate(date) {
@@ -67,3 +80,10 @@ function getFormatedDate(date) {
 var port = 8666;
 server.listen(port);
 console.log("Server is listening:" + port);
+var s = [];
+s.push("[LOG DATE]");
+s.push("[DURATION CLIENT SERVER]");
+s.push("[JAVASCRIPT CLASS]");
+s.push("[SEVERITY]");
+s.push("MESSAGE");
+console.log(s.join(''));
