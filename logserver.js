@@ -1,3 +1,8 @@
+#!/usr/bin/env node
+
+/**
+ * Log server allow to store the log from a remote application into this server as a file of on the output
+ */
 var http = require("http");
 var url = require('url');
 var fs = require('fs');
