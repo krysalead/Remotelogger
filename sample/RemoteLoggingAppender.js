@@ -2,16 +2,47 @@ Aria.classDefinition({
       $classpath : "modules.core.utils.RemoteLoggingAppender",
       $dependencies : ["aria.core.IO", "aria.utils.Json"],
       $constructor : function(url) {
+        var body = document.getElementsByTagName("body")[0];
+        this._img = document.createElement("IMG");
+        body.appendChild(this._img);
         this.url = url;
+        this._queue = [];
+        this.polling();
       },
       $prototype : {
+        polling : function() {
+          var that = this;
+          //If it fails we need to stop polling
+          this._img.onError = function() {
+            that.stopPolling();
+          };
+
+          this.interval = setInterval(function() {
+                if (that._img.complete) {
+                  that._ongoingRequest = false;
+                  if (that._queue.length > 0) {
+                    that.processQueue();
+                  }
+                  //If we are here it means we don't need to check that the server is reponding
+                  that._img.onError = null;
+                }
+              }, 10);
+        },
+        stopPolling : function() {
+          clearInterval(this.interval);
+        },
+        processQueue : function() {
+          this._ongoingRequest = true;
+          this._img.src = this._queue.shift() + "&senddate=" + (new Date()).getTime();
+        },
         _sendRequest : function(className, msg, sev) {
           if (isUndefined(this._img)) {
             var body = document.getElementsByTagName("body")[0];
             this._img = document.createElement("IMG");
             body.appendChild(this._img);
           }
-          this._img.src = this.url + "?classname=" + className + "&log=" + encodeURIComponent(msg) + "&sev=" + sev;
+          this._queue.push(this.url + "?classname=" + className + "&log=" + encodeURIComponent(msg) + "&sev=" + sev
+              + "&logdate=" + (new Date()).getTime());
         },
         /**
          * Debug
@@ -94,16 +125,21 @@ Aria.classDefinition({
 
           str = "\nException";
           str += "\n" + '---------------------------------------------------';
-          if (e.fileName)
+          if (e.fileName){
             str += '\nFile: ' + e.fileName;
-          if (e.lineNumber)
+          }
+          if (e.lineNumber){
             str += '\nLine: ' + e.lineNumber;
-          if (e.message)
+          }
+          if (e.message){
             str += '\nMessage: ' + e.message;
-          if (e.name)
+          }
+          if (e.name){
             str += '\nError: ' + e.name;
-          if (e.stack)
+          }
+          if (e.stack){
             str += '\nStack:' + "\n" + e.stack.substring(0, 200) + " [...] Truncated stacktrace.";
+          }
           str += "\n" + '---------------------------------------------------' + "\n";
 
           return str;
