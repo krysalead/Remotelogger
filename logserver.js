@@ -6,6 +6,7 @@
 var http = require("http");
 var url = require('url');
 var fs = require('fs');
+var path = require('path');
 //npm install colors
 var colors = require('colors');
 //npm install yargs
@@ -30,7 +31,7 @@ var server = http.createServer(function(request, response) {
   } else {
     console.log("Missing parameter:" + request.url);
   }
-  var img = fs.readFileSync('./logo.gif');
+  var img = fs.readFileSync(path.join(__dirname, 'logo.gif'));
   response.writeHead(200, {
     'Content-Type': 'image/gif'
   });
@@ -60,11 +61,10 @@ function getMessage(classname, msg, sev, logtime, senttime) {
 }
 
 function formatTime(duration) {
-  var milliseconds = parseInt((duration % 1000) / 100),
+  var milliseconds = parseInt(duration % 1000),
     seconds = parseInt((duration / 1000) % 60),
     minutes = parseInt((duration / (1000 * 60)) % 60),
 
-    hours = (hours < 10) ? "0" + hours : hours;
   minutes = (minutes < 10) ? "0" + minutes : minutes;
   seconds = (seconds < 10) ? "0" + seconds : seconds;
 

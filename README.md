@@ -2,7 +2,7 @@ Remotelogger
 ===========
 
 Remote Logger is a node module able to handle request with strings and to put in a log file and the console.
-The JavaScript is based on [Aria-Templates](http://ariatemplates.com/) scripts
+The JavaScript sample client code is based on [Aria-Templates](http://ariatemplates.com/) scripts and a standard JavaScript one.
 
 * Run the server
 * Load in your code the javascript
