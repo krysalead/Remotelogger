@@ -21,10 +21,17 @@ var server = http.createServer(function(request, response) {
   if (query.log) {
     var sev = query.sev ? query.sev : 'log';
     var cl = query.classname ? query.classname : "General";
-    if (filter == undefined || (cl.indexOf(filter) > -1 || query.log.indexOf(filter) > -1 || sev.indexOf(filter) > -1)) {
-      var log = getMessage(cl, query.log, sev, query.logdate, query.senddate);
+    var depth = query.depth;
+    if (filter == undefined || (cl.indexOf(filter) > -1 || query.log.indexOf(filter) > -1 || sev.indexOf(filter) >
+        -1)) {
+      var log = getMessage(cl, query.log, sev, query.logdate, query.senddate, depth);
       if (logfile) {
-        fs.appendFileSync(logfile, log + "\n");
+        fs.appendFile(logfile, log + "\n", function(err) {
+          if (err) {
+            console.error('Fail to write in ' + logfile);
+            console.error(err);
+          }
+        });
       }
       console.log(log);
     }
@@ -43,16 +50,18 @@ var sevColor = {
   log: 'green',
   error: 'red',
   warn: 'yellow',
-  debug: 'blue'
-}
+  debug: 'white',
+  info: 'cyan'
+};
 
 function getColor(sev) {
-  return sevColor[sev] ? sevColor[sev] : 'blue';
+  return sevColor[sev.toLowerCase()] ? sevColor[sev.toLowerCase()] : 'white';
 }
 
-function getMessage(classname, msg, sev, logtime, senttime) {
+function getMessage(classname, msg, sev, logtime, senttime, depth) {
   var s = [];
-  s.push("[" + getFormatedDate(new Date(new Number(logtime))) + "]");
+  s.push(getSpace(depth));
+  s.push("[" + getFormatedDate(new Date(logtime)) + "]");
   s.push("[" + formatTime((new Date()).getTime() - senttime) + "]");
   s.push("[" + classname + "]");
   s.push("[" + sev.toUpperCase() + "]");
@@ -60,10 +69,18 @@ function getMessage(classname, msg, sev, logtime, senttime) {
   return (s.join(""))[getColor(sev)];
 }
 
+function getSpace(depth) {
+  depth = depth ? depth : 0;
+  var s = "";
+  for (var i = 0; i < depth; i++) {
+    s += "_";
+  }
+}
+
 function formatTime(duration) {
-  var milliseconds = parseInt(duration % 1000),
-    seconds = parseInt((duration / 1000) % 60),
-    minutes = parseInt((duration / (1000 * 60)) % 60),
+  var milliseconds = parseInt(duration % 1000, 10),
+    seconds = parseInt((duration / 1000) % 60, 10),
+    minutes = parseInt((duration / (1000 * 60)) % 60, 10);
 
   minutes = (minutes < 10) ? "0" + minutes : minutes;
   seconds = (seconds < 10) ? "0" + seconds : seconds;

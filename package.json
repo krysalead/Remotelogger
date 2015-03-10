@@ -1,6 +1,6 @@
 {
   "name": "remotelogger",
-  "version": "1.0.6",
+  "version": "1.0.8",
   "description": "This server is able to receive logs from javascript remote application",
   "main": "logserver",
   "scripts": {
