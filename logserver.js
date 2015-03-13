@@ -61,7 +61,7 @@ function getColor(sev) {
 function getMessage(classname, msg, sev, logtime, senttime, depth) {
   var s = [];
   s.push(getSpace(depth));
-  s.push("[" + getFormatedDate(new Date(logtime)) + "]");
+  s.push("[" + getFormatedDate(new Date(1 * logtime)) + "]");
   s.push("[" + formatTime((new Date()).getTime() - senttime) + "]");
   s.push("[" + classname + "]");
   s.push("[" + sev.toUpperCase() + "]");
@@ -71,7 +71,7 @@ function getMessage(classname, msg, sev, logtime, senttime, depth) {
 
 function getSpace(depth) {
   depth = depth ? depth : 0;
-  var s = "";
+  var s = "" + depth;
   for (var i = 0; i < depth; i++) {
     s += "_";
   }
