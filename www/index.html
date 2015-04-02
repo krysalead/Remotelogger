@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Remote Logger : Analysis Tool</title>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/reqwest/1.1.5/reqwest.js"></script>
+	<script src='//cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.2/underscore-min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.1.1/list.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/spin.js/2.0.1/spin.min.js"></script>
+	<script src="sequence-diagram-min.js"></script>
+	<link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+	<script src="app.js"></script>
+	<script src="log.js"></script>
+	<script src="stats.js"></script>
+	<script src="diagram.js"></script>
+</head>
+<style type="text/css">
+	h1{
+		text-align: center;
+		color:#005EB8;
+	}
+	a {
+		color:#CE0058;
+	}
+
+	.odd{
+		background-color:#cdcdcd; 
+	}
+
+	.raw{
+		border:1px solid #333; 	
+	}
+
+	.header{
+		font-weight: bold;
+	}
+
+	.debug{
+		background-color:#cdcdcd; 
+	}
+
+	.debug, .info, .warn, .error {
+		border-bottom: 1px solid #333;
+		padding:12px;
+	}
+	.debug {
+	    color: #00529B;
+	    background-color: #BDE5F8;
+	}
+	.info {
+	    color: #4F8A10;
+	    background-color: #DFF2BF;
+	}
+	.warn {
+	    color: #9F6000;
+	    background-color: #FEEFB3;
+	}
+	.error {
+	    color: #D8000C;
+	    background-color: #FFBABA;
+	}
+
+</style>
+<body onload="app()">
+	<H1>Remote Logger : Analysis Tool</H1>
+	<button onclick="navtologs()">Live Logs</button>
+	<button onclick="navtostat()">Bottle Neck</button>
+	<button onclick="navtoDiagram()">Sequences</button>
+	<div id="main">
+	</div>
+</body>
+</html>

@@ -24,6 +24,31 @@ Run it
 remotelogger
 ```
 
+Message Structure
+------------------
+
+Here is the URL to do a remote log : 
+```bash
+curl http://localhost:8666/log/?classname=com.mycompany.test&log=This is my log message message&sev=DEBUG&logdate=1426844546265&depth=4&senddate=1426844546265
+```
+
+```json
+{
+	cl : "ClassName or identifier of the javascript that did the log",
+	log : "Log Message",
+	logdate : "Date of the log (as we are queuing the message to ensure the order of reception)",
+	depth : "Depth of the call stack not used ",
+	senddate:"Date when the log was send from the client (Must be UTC time so we can calculate the request time)",
+	sev : "The severity of the log [DEBUG,INFO,ERROR,WARN]"
+}
+```
+
+Web
+-------------------
+
+open [http://localhost:8666/www/](http://localhost:8666/www/) you will land on an interface allowing to see the log in web mode (search tool from the browser) and also see the occurency of call of a class (identifier). If you add a "Entering" keyword in your log in each of first line of your function, it will be able to draw a sequence diagram.
+
+
 Options
 ------------------
 * Filtering on the logs, this allow to display on the file and the console only what is matching the filter
