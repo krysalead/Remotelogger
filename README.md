@@ -64,10 +64,18 @@ Only logs containing **mainpage** will be displayed
 remotelogger --logfile myfile.log
 ```
 
+The web part of the remote logger can use [firebase](http://firebase.com/) for live update.
+
+```bash
+remotelogger --firebase https://YOURURL.firebaseio.com
+```
+
 Known Issues
 --------------
 
 On OSX we have to link node installation as it is in linux system.
+
+Web application is slow on huge amount of data TODO : improve it.
 
 ```bash
 sudo ln -s /usr/local/bin/node /usr/bin/node
