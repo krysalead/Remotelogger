@@ -1,4 +1,5 @@
-//#!/usr/bin/env node
+#!/usr/bin/env node
+
 /**
  * The remote logger allow to log from a distant device onto your server. It is usefull when running application on
  * mobile device or also when someone is able to reproduce a bug you can't locally. We can also use this script in
@@ -9,8 +10,6 @@ var url = require('url');
 var fs = require('fs');
 var path = require('path');
 var req = require('request');
-//npm install colors
-var colors = require('colors');
 //npm install yargs
 var argv = require('yargs').argv;
 
